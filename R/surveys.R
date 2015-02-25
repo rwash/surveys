@@ -1,6 +1,6 @@
-library(psy) # cronbach
-library(gdata) # trim
-library(ggplot2)
+#library(psy) # cronbach
+#library(gdata) # trim
+#library(ggplot2)
 #source("multiplot.R")
 
 
