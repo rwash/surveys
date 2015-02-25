@@ -1,7 +1,7 @@
 Package: surveys
 Title: Functions to assist with loading and analyzing surveys
 Version: 0.0.0.9000
-Authors@R: Rick Wash <rick.wash@gmail.com> [aut, cre]
+Authors@R: c(as.person("Rick Wash <rick.wash@gmail.com> [aut, cre]"))
 Description: Includes a number of functions that I commonly use to load and
    analyze surveys.  It can recognize a wide variety of question types, create
    scales of related items, etc.
@@ -9,3 +9,5 @@ Depends: R (>= 3.1.2)
 License: MIT + file LICENSE
 LazyData: true
 VignetteBuilder: knitr
+URL: http://github.com/rwash/surveys
+BugReports: http://github.com/rwash/surveys/issues
