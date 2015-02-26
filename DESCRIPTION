@@ -8,7 +8,6 @@ Description: Includes a number of functions that I commonly use to load and
 Depends: R (>= 3.1.2)
 License: MIT + file LICENSE
 LazyData: true
-VignetteBuilder: knitr
 URL: http://github.com/rwash/surveys
 BugReports: http://github.com/rwash/surveys/issues
 Imports: psy,
