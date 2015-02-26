@@ -8,7 +8,16 @@
 # ** Functions to form items into a scale and analyze scales
 # ***************************************
 
-# * Function to standardize an item or scale
+#' Function to standardize an item or scale.
+#'
+#' Standardizes a vector or column of data by centering around the mean and making
+#'   standard deviation equal to one
+#'
+#' Note: This function automatically removes NAs when calculating the mean and standard deviation
+#'
+#' @param x A vector of data values to be standardized
+#' @return Standardized data values
+#'
 standardize <- function(x) {
   mean = mean(x, na.rm=T)
   sd = sd(x, na.rm=T)
@@ -30,11 +39,26 @@ alt_alpha <- function(v1) {
   resu
 }
 
-# * Functions to form a scale from a set of survey items
-# - scale.fun: which function to compose the scale.   examples include sum, mean
-# - standard: should the individual items be standardized before inclusion in the scale?
-# - numeric: should the individual items be cast into numeric before inclusion in the scale?
-item.scale <- function(formula, data=NULL, subset=NULL, na.action = na.pass, drop.unused.levels=F, scale.fun=mean, standard=FALSE, numeric=FALSE, ...) {
+#' Functions to form a scale from a set of survey items
+#'
+#' Combines multiple items, specified using a formula interface, into a single "scale"
+#'
+#' @param formula A formula specifying the items to combine into a scale
+#'   Should be of the form \code{~ item1 + item2 + item3}
+#' @param data The data frame to use to get the data from
+#' @param subset Specifies if only a specific subset of the data should be used
+#' @param na.action What should be done with NAs?
+#' @param drop.unused.level If factors are being combined, should we only include levels that
+#'   are actually used?
+#' @param scale.fun which function to compose the scale.   examples include sum, mean
+#' @param standard should the individual items be standardized before inclusion in the scale?
+#' @param numeric should the individual items be cast into numeric before inclusion in the scale?
+#' @return An object of type \code{item.scale}.  This is fundamentally a vector, and can
+#'   be used as such.  It has a number of additional attributes (such as \code{cronbach})
+#'   that are useful in future calculations and functions
+item.scale <- function(formula, data=NULL, subset=NULL, na.action = na.pass,
+                       drop.unused.levels=F, scale.fun=mean, standard=FALSE,
+                       numeric=FALSE, ...) {
   # Extract the appropriate variables using model.frame
   # This is roundabout -- form the call and then evaluate it.
   mfc <- match.call(expand.dots=FALSE)
