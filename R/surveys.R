@@ -1,7 +1,3 @@
-?#library(psy) # cronbach
-#library(gdata) # trim
-#library(ggplot2)
-#source("multiplot.R")
 
 # Note: You might need to change this hard-coded y limit
 plot_question <- function(d, question, labels=NULL, ymax=1200) {
@@ -44,6 +40,8 @@ factanal.item.scale <- function(x, factors, ...) {
 # ***************************************
 # ** Functions to make cleaning surveys easier
 # ***************************************
+
+# TODO: Write a column type auto-detectors
 
 
 # Convert a set of columns to a given type (given by fun)
