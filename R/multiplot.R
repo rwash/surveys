@@ -1,17 +1,20 @@
 # from http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
 # downloaded May 8 2013
 
-# Multiple plot function
-#
-# ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
-# - cols:   Number of columns in layout
-# - layout: A matrix specifying the layout. If present, 'cols' is ignored.
+# 'Multiple plot function
+#'
+#' ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
 #
 # If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
 # then plot 1 will go in the upper left, 2 will go in the upper right, and
 # 3 will go all the way across the bottom.
-#
-multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+#' @param ... ggplot objects
+#' @param plotlist A list of ggplot objects.  Will be combined with objects in \code{...}
+#' @param cols:   Number of columns in layout
+#' @param layout: A matrix specifying the layout. If present, 'cols' is ignored.
+#' @return A single grid object containing all of the plots arranged as specified in \code{cols} or \code{layout}
+#' @export
+multiplot <- function(..., plotlist=NULL, cols=1, layout=NULL) {
   #require(grid)
 
   # Make a list from the ... arguments and plotlist

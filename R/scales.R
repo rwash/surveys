@@ -162,7 +162,6 @@ drop1.item.scale <- function(x, scope) {
 #'   must be present either in the original data from of {x} or in the environment.
 #' @return An \code{n} by 3 matrix where \code{n} is the number of items to be added.
 #'   Includes the mean, standard deviation, and alpha of each new scale as items are added.
-
 add1.item.scale <- function(x, scope) {
   if (missing(scope)) {
     stop("Must specify scope variables to be added")
@@ -187,6 +186,13 @@ add1.item.scale <- function(x, scope) {
   ans
 }
 
+#' Prints information about an \code{item.scale} object
+#'
+#' Outputs standard information found in an \code{item.scale}, such as number of items, number of
+#' responses, scale mean, and Cronbach's alpha
+#'
+#' @param x An \code{item.scale} object
+#' @param digits The number of digits to print when printing numbers.  Passed to \code{format()}
 print.item.scale <- function(x, digits=3) {
   if (attr(x, "standardized"))
     cat("Standardized ")
@@ -200,6 +206,14 @@ print.item.scale <- function(x, digits=3) {
   #  cat(paste("Alternative Cronbach's Alpha: \n  ", format(attr(x, "altalpha"), digits=digits), "\n", sep=""))
 }
 
+#' Calculates additional summary data about an \code{item.scale}
+#'
+#' Calculates summary data such as individual item means and standard deviations
+#'
+#' @param x An \code{item.scale} object
+#' @param maxsum Not sure what this is
+#' @param digits Unused
+#' @return An object of class \code{summary.item.scale}
 summary.item.scale <- function(x, maxsum=NULL, digits=NULL) {
   out <- c("Mean"=mean(x, na.rm=T), "SD" = sd(x, na.rm=T), "Cronbach"=attr(x, "cronbach"))
   if ((!is.null(maxsum)) && (length(out) > maxsum)) {
@@ -213,6 +227,13 @@ summary.item.scale <- function(x, maxsum=NULL, digits=NULL) {
   out
 }
 
+#' Prints out long summary information about an \code{item.scale}
+#'
+#' Prints out basic summary information, such as mean, sd, and cronbach's alpha.  Also prints out long
+#' summary information, such as the mean and sd of each item, and the item-item correlations
+#'
+#' @param x An \code{item.scale} object
+#' @param digits The number of digits to print when printing numbers.  Passed to \code{format()}
 print.summary.item.scale <- function(x, digits=3) {
   print.item.scale(attr(x, "data"), digits=digits)
 
@@ -221,4 +242,25 @@ print.summary.item.scale <- function(x, digits=3) {
   print(temp, digits=digits)
   cat("\nItem-Item Correlations:\n")
   print(attr(attr(x, "data"), "item.cor"), digits=digits)
+}
+
+if (!exists("factanal.default")) {
+  factanal.default <- factanal
+}
+
+#' Conduct a factor analysis
+factanal <- function(x, factors, ...) {
+  UseMethod("factanal")
+}
+
+#' Conduct a factor analysis on the items of an \code{item.scale}
+#'
+#' Extract the list of items in an \code{item.scale} and then conduct a maximum likelihood
+#' factor analysis on that complete list of items
+#'
+#' @param x An \code{item.scale} that contains the list of items to factor analyze
+#' @param factors the number of factors to extract
+#' @return An object of class \code{factanal}
+factanal.item.scale <- function(x, factors, ...) {
+  factanal.default(na.omit(attr(x, "model.frame")), factors, ...)
 }
