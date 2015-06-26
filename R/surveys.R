@@ -3,6 +3,11 @@
 # ***************************************
 
 # TODO: Write a column type auto-detectors
+# http://www.r-bloggers.com/package-wide-variablescache-in-r-packages/
+question_types = new.env(parent=emptyenv())
+add_question_type <- function() {
+
+}
 
 
 # Convert a set of columns to a given type (given by fun)

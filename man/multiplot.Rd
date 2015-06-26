@@ -2,7 +2,7 @@
 % Please edit documentation in R/multiplot.R
 \name{multiplot}
 \alias{multiplot}
-\title{ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)}
+\title{Multiple plot function}
 \usage{
 multiplot(..., plotlist = NULL, cols = 1, layout = NULL)
 }

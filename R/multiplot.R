@@ -1,7 +1,7 @@
 # from http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
 # downloaded May 8 2013
 
-# 'Multiple plot function
+#' Multiple plot function
 #'
 #' ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
 #

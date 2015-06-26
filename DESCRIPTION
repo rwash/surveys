@@ -14,3 +14,4 @@ Imports: psy,
     gdata,
     ggplot2,
     grid
+Suggests: testthat
