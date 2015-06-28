@@ -48,6 +48,13 @@ attention_check <- function(column) {
 # --- Ignore questions ---
 ignore_questions <- new.env(parent=emptyenv())
 
+#' Ignore a specific question
+#'
+#' Tells the question auto-detector to ignore a specific question.  This doesn't do any processing
+#' just passes the raw character vector through
+#'
+#' @param q_name The name of the question to ignore
+#' @export
 ignore_question <- function(q_name) {
   if (exists(q_name, envir=attention_checks)) {
     warning(paste0(q_name, " is already being ignored..."))
