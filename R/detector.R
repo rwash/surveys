@@ -36,6 +36,10 @@ remove_question_type <- function(name) {
     rm(list=name, envir=question_types)
 }
 
+replace_nas <- function(v) {
+  return(ifelse(v=="", NA, v))
+}
+
 
 #' Question Auto-Detect
 #'
@@ -46,6 +50,7 @@ remove_question_type <- function(name) {
 #' @return A vector of processed data
 #' @export
 detect.question <- function(column) {
+  column <- replace_nas(column)
   types <- ls(envir=question_types)
   for (type in types) {
     qtype <- get(type, envir=question_types)
