@@ -4,10 +4,12 @@
 \alias{detect.question}
 \title{Question Auto-Detect}
 \usage{
-detect.question(column)
+detect.question(column, col_name = "")
 }
 \arguments{
 \item{column}{A single vector of data from a survey}
+
+\item{col_name}{(optional) The name of the column}
 }
 \value{
 A vector of processed data

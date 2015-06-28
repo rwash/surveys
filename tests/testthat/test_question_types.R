@@ -85,4 +85,34 @@ test_that("date detection works", {
   expect_equal(out[2], lubridate::ymd_hms("2015-06-28 11:45:01"))
 })
 
+test_that("adding an attention check question works", {
+  add_attention_check("test_ac1", "test_valid")
+  expect_true(exists("test_ac1", envir=surveys::attention_checks))
+  expect_equal(get("test_ac1", envir=surveys::attention_checks), "test_valid")
+  rm(list="test_ac1", envir=surveys::attention_checks)
+})
+
+test_that("attention check detection works in detect.question", {
+  add_attention_check("test_ac2", "test_valid")
+  out <- detect.question(c("test_valid", "test_invalid"), col_name="test_ac2")
+  expect_is(out, "logical")
+  expect_equal(length(out), 2)
+  expect_true(out[1])
+  expect_false(out[2])
+  rm(list="test_ac2", envir=surveys::attention_checks)
+})
+
+test_that("attention check detection works in detect.survey", {
+  add_attention_check("test_ac3", "test_valid")
+  df <- data.frame(one=c("1.0", "2.0", "2.0"), test_ac3=c("test_invalid", "test_valid", "test_valid"), stringsAsFactors = F)
+  out <- detect.survey(df)
+  expect_is(out, "data.frame")
+  expect_is(out$test_ac3, "logical")
+  expect_equal(length(out$test_ac3), 3)
+  expect_false(out$test_ac3[1])
+  expect_true(out$test_ac3[2])
+  expect_true(out$test_ac3[3])
+  rm(list="test_ac3", envir=surveys::attention_checks)
+})
+
 

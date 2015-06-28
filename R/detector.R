@@ -46,11 +46,13 @@ replace_nas <- function(v) {
 #' Automatically detect what type of question this column of data came from, and process it
 #'
 #' @param column A single vector of data from a survey
+#' @param col_name (optional) The name of the column
 #'
 #' @return A vector of processed data
 #' @export
-detect.question <- function(column) {
+detect.question <- function(column, col_name="") {
   column <- replace_nas(column)
+  attr(column, "name") <- col_name
   types <- ls(envir=question_types)
   for (type in types) {
     qtype <- get(type, envir=question_types)
@@ -65,7 +67,10 @@ detect.question <- function(column) {
       }
     }
   }
-  warning("Column of unknown type")
+  warn_msg <- "Column of unknown type"
+  if (col_name != "") { warn_msg <- paste0("Column ", col_name, " of unknown type")}
+  warning(warn_msg)
+  attr(column, "name") <- NULL
   return(column)
 }
 
@@ -79,7 +84,8 @@ detect.question <- function(column) {
 #' @return A new data.frame containing the processed survey
 #' @export
 detect.survey <- function(frame) {
-  out <- lapply(frame, detect.question)
+  out <- lapply(names(frame), function(n) { detect.question(frame[[n]], n)} )
+  names(out) <- names(frame)
   for (i in names(out)) {
     if (is.null(out[[i]])) {
       out[[i]] <- NULL  # Actually remove the column
