@@ -129,4 +129,31 @@ test_that("attention check detection works in detect.survey", {
   rm(list="test_ac3", envir=surveys::attention_checks)
 })
 
+test_that("adding an ignore question", {
+  ignore_question("test_ignore")
+  expect_true(exists("test_ignore", envir=surveys::ignore_questions))
+  rm(list="test_ignore", envir=surveys::ignore_questions)
+})
 
+test_that("ignored questions are ignored by detect.question", {
+  ignore_question("test_ignore2")
+  out <- detect.question(c("1.0", "2.0"), col_name="test_ignore2")
+  expect_is(out, "character")
+  expect_equal(out[1], "1.0")
+  expect_equal(out[2], "2.0")
+  rm(list="test_ignore2", envir=surveys::ignore_questions)
+})
+
+test_that("ignored questions are ignored by detect.survey", {
+  ignore_question("test_ignore3")
+  df <- data.frame(one=c("1.0", "2.0", "2.0"), test_ignore3=c("1.0", "2.2", "3.3"), stringsAsFactors = F)
+  out <- detect.survey(df)
+  expect_is(out, "data.frame")
+  expect_is(out$test_ignore3, "character")
+  expect_equal(length(out$test_ignore3), 3)
+  expect_equal(out$test_ignore3[1], "1.0")
+  expect_equal(out$test_ignore3[2], "2.2")
+  expect_equal(out$test_ignore3[3], "3.3")
+
+  rm(list="test_ignore", envir=surveys::ignore_questions)
+})

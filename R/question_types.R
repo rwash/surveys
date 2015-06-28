@@ -45,7 +45,23 @@ attention_check <- function(column) {
   return(column == valid_value & !is.na(column))
 }
 
+# --- Ignore questions ---
+ignore_questions <- new.env(parent=emptyenv())
+
+ignore_question <- function(q_name) {
+  if (exists(q_name, envir=attention_checks)) {
+    warning(paste0(q_name, " is already being ignored..."))
+  }
+  assign(q_name, "ignore", envir=ignore_questions)
+}
+
+is_ignore_question <- function(column) {
+  ignore_qs <- ls(envir=ignore_questions)
+  return(attr(column, "name") %in% ignore_qs)
+}
+
 load_question_types <- function() {
+  add_question_type("ignored", is_ignore_question, as.character)
   add_question_type("attention.check", is_attention_check, attention_check)
   add_question_type("numeric", char_is_numeric, as.numeric)
   add_question_type("logical", char_is_logical, function(x) { as.logical(convert_logical(x)) } )
