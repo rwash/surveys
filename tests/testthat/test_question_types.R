@@ -92,6 +92,20 @@ test_that("adding an attention check question works", {
   rm(list="test_ac1", envir=surveys::attention_checks)
 })
 
+test_that("attention checks fail NAs", {
+  add_attention_check("test_ac4", "test_valid")
+  col <- c("test_valid", "test_invalid", NA, "test_valid")
+  attr(col, "name") <- "test_ac4"
+  out <- attention_check(col)
+  expect_is(out, "logical")
+  expect_equal(length(out), 4)
+  expect_true(out[1])
+  expect_false(out[2])
+  expect_false(out[3])
+  expect_true(out[4])
+  rm(list="test_ac4", envir=surveys::attention_checks)
+})
+
 test_that("attention check detection works in detect.question", {
   add_attention_check("test_ac2", "test_valid")
   out <- detect.question(c("test_valid", "test_invalid"), col_name="test_ac2")

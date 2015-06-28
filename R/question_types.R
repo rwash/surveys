@@ -42,7 +42,7 @@ is_attention_check <- function(column) {
 
 attention_check <- function(column) {
   valid_value <- get(attr(column, "name"), envir=attention_checks)
-  return(column == valid_value)
+  return(column == valid_value & !is.na(column))
 }
 
 load_question_types <- function() {
