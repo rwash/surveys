@@ -105,7 +105,9 @@ detect.survey <- function(frame) {
 #' @return A data.frame containing the processed dataset
 #' @export
 load_survey <- function(file, ...) {
-  f <- read.csv(file, stringsAsFactors=F, ...)
+  f <- read.csv(file, as.is=T, ...)
+  attr(f, "question.text") <- f[1,]
+  f <- f[-1,]
   return(detect.survey(f))
 }
 
