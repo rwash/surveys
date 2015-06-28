@@ -65,6 +65,7 @@ test_that("single value columns are detected", {
   expect_true(all_identical(c("", "", "")))
   expect_true(all_identical(c("xyz", "xyz", "xyz")))
   expect_false(all_identical(c("1", "1", "2")))
+  expect_true(all_identical(c(NA, NA, NA)))
 })
 
 test_that("single value columns are removed", {
