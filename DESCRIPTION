@@ -13,5 +13,7 @@ BugReports: http://github.com/rwash/surveys/issues
 Imports: psy,
     gdata,
     ggplot2,
-    grid
+    grid,
+    lubridate,
+    stringr
 Suggests: testthat

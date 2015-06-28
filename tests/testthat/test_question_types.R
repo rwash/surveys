@@ -48,5 +48,41 @@ test_that("ip detection works", {
   expect_equal(out, c("1.2.3.4", "127.0.0.1", NA))
 })
 
+test_that("quatrics subject_id detector works", {
+  expect_true(is_qualtrics_subject_id(c("R_abcdeabcdeabcde", "R_ab123ab123ab123", "R_123451234512345")))
+  expect_false(is_qualtrics_subject_id(c("abcdeabcdeabcde", "R_abcde")))
+})
+
+test_that("qualtrics subject_id detection works", {
+  ids <- c("R_abcdeabcdeabcde", "R_ab123ab123ab123", "R_123451234512345")
+  out <- detect.question(ids)
+  expect_equal(out, ids)
+})
+
+test_that("single value columns are detected", {
+  expect_true(all_identical(c("1", "1", "1")))
+  expect_true(all_identical(c("a", "a", "a")))
+  expect_true(all_identical(c("", "", "")))
+  expect_true(all_identical(c("xyz", "xyz", "xyz")))
+  expect_false(all_identical(c("1", "1", "2")))
+})
+
+test_that("single value columns are removed", {
+  # TODO: fill this test in
+})
+
+test_that("date detector works", {
+  expect_true(char_is_date(c("2015-04-05 15:23:15", "2015-06-28 11:45:01")))
+  expect_false(char_is_date(c("20157-04-05 15:23:15", "2015-06-28 11:45:01")))
+  expect_false(char_is_date(c("2015-04-05 25:23:15", "2015-06-28 11:45:01")))
+})
+
+test_that("date detection works", {
+  dates <- c("2015-04-05 15:23:15", "2015-06-28 11:45:01")
+  out <- detect.question(dates)
+  expect_is(out, "POSIXct")
+  expect_equal(out[1], lubridate::ymd_hms("2015-04-05 15:23:15"))
+  expect_equal(out[2], lubridate::ymd_hms("2015-06-28 11:45:01"))
+})
 
 
