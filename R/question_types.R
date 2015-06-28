@@ -11,7 +11,7 @@ char_is_date <- function(x) { return(all(!is.na(suppressWarnings(lubridate::ymd_
 
 convert_logical <- function(x) { return(sub("0", "F", sub("1", "T", x))) }
 
-checkbox <- function(x) { sapply(x, isTRUE) } # How is checkbox different from logical?
+#checkbox <- function(x) { sapply(x, isTRUE) } # How is checkbox different from logical?
 
 
 
