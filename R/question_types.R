@@ -5,7 +5,7 @@ char_is_logical <- function(x) { return(all(grepl("^(false)$|^(true)$|^f$|^t$|^0
 char_is_checkbox <- function(x) { return(F)} # How is checkbox different from logical?s
 char_is_ip <- function(x) { return(all(grepl("^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$", x) | is.na(x))) }
 is_qualtrics_subject_id <- function(x) { return(all(grepl("^R_[a-zA-Z0-9]{15}$", x) | is.na(x)))}
-all_identical <- function(x) { return(length(unique(x)) == 1)}
+all_identical <- function(x) { return(length(unique(x)) == 1 || all(is.na(x)))}
 char_is_date <- function(x) { return(all(!is.na(suppressWarnings(lubridate::ymd_hms(x))))) }
 
 # Convert 0/1 to T/F.  Useful when converting a logical question
