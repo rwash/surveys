@@ -2,8 +2,21 @@
 # ** Functions to make cleaning surveys easier
 # ***************************************
 
-
-# Convert a set of columns to a given type (given by fun)
+#' Apply a function to specific columns
+#'
+#' Apply a function to a specified set of columns in a data frame
+#'
+#' @param df The data.frame to apply to
+#' @param fun The function to apply.  The first parameter should be the column of data
+#' @param cols The set of columns to apply to
+#' @param ... Additional parameters to pass into \code{fun}
+#'
+#' @return A new copy of the data frame with the modified columns
+#' @export
+#'
+#' @examples
+#' df <- data.frame(one=c("1.0", "2.0"), two=c("3.0", "4.0"))
+#' df <- apply_columns(df, as.numeric, c("one", "two"))
 apply_columns <- function(df, fun, cols, ...) {
   for (col in cols) {
     df[[col]] <- fun(df[[col]], ...)
@@ -11,7 +24,18 @@ apply_columns <- function(df, fun, cols, ...) {
   df
 }
 
-# Take a set of columns and create _n version of them that are numeric (for Likerts)
+#' Add numeric versions of columns
+#'
+#' Take a data frame and add numeric versions of specified factor columns
+#'
+#' @param df The data.frame with the source data
+#' @param cols A list of column names to convert
+#' @param fun The function to apply to all of the columns
+#' @param ... Additional parameters to fun
+#'
+#' @return A new data frame with additional columns.  Each column listed in \code{cols} will have
+#'   a new version added, column\code{_n}, containing the data data as in column convert to numeric
+#' @export
 make_columns_numeric <- function(df, cols, fun=as.numeric, ...) {
   for (col in cols) {
     df[[paste(col, "_n", sep="")]] <- fun(df[[col]], ...)
@@ -19,13 +43,24 @@ make_columns_numeric <- function(df, cols, fun=as.numeric, ...) {
   df
 }
 
-# Create strings from all combinations of its inputs
+#' Create all combinations of sets of strings
+#'
+#' Combine two sets of strings to create all possible combinations
+#'
+#' @param ... One or more character vectors
+#' @param sep String to use as a separator character
+#'
+#' @return A vector of all possible combinations of the input paramters
+#' @export
+#'
+#' @examples
+#' combine_names(c("is", "as"), c("numeric", "logical"))
 combine_names <- function(..., sep=".") {
   nargs <- length(args <- list(...))
   df <- expand.grid(args)
   chs <- apply(df, 2, as.character)
   if (length(df[,1]) > 1) {
-    chs <- apply(chs, 2, trim)
+    chs <- apply(chs, 2, stringr::str_trim)
   } else {
     chs <- trim(chs)
   }
@@ -36,7 +71,19 @@ combine_names <- function(..., sep=".") {
   }
 }
 
-# Make a formula from a combine_names series of variables
+#' Create a formula from a list of variable names
+#'
+#' Creates a formula from a list of variable names.  If more than one list of names, it combines
+#' them using \code{\link{combine_names}} to create all combinations of names.
+#'
+#' @param ... One or more lists of variable names to make into a formula
+#' @param type Combination method.  Defaults to '+'.  It might also be useful to do '*'
+#'
+#' @return A formula containing all of the specified names
+#' @export
+#'
+#' @examples
+#' mf(c("var"), c("one", "two"), "_n")
 mf <- function(..., type="+") {
   temp <- combine_names(...)
   t2 <- paste("~ ", paste(temp, collapse=type))
@@ -75,30 +122,5 @@ question <- function(survey, col, new_name=col, question_type=checkbox, ...) {
   survey
 }
 
-# Generic function to handle multiple choice functions
-multiple_choice <- function(x, levs, labs=levs, ordered=TRUE, reverse=FALSE) {
-  if (reverse) {
-    levs <- rev(levs)
-  }
-  factor(x, levels=levs, labels=labs, ordered=ordered)
-}
 
-# function to change NAs to 0's
-na_zero <- function(x) { x[is.na(x)] <- 0; x}
-
-# functions to help with the different types of Questions
-emotions <- function(x, levs=emotion_levels, labs=levs, ordered=F, reverse=F) { multiple_choice(x, levs=levs, labs=labs, ordered=ordered, reverse=reverse) }
-familiarity <- function(x, levs=familiarity_levels, ...) { multiple_choice(x, levs=levs, ...)}
-comfortable <- function(x, levs=comfort_levels, ...) { multiple_choice(x, levs=levs, ...)}
-concern <- function(x, levs=concern_levels, ...) { multiple_choice(x, levs=levs, ...)}
-agree <- function(x, levs=agree_levels, ...) { multiple_choice(x, levs=levs, ...)}
-checkbox <- function(x, lev=sort(levels(x)), labs=c("No", "Yes")) { ordered(x, levels=lev, labels=labs)}
-frequency <- function(x, levs=frequency_levels, ...) { multiple_choice(x, levs=levs, ...)}
-yesno <- function(x, levs=yesno_levels, ordered=F, ...) { multiple_choice(x, levs=levs, ordered=ordered, ...)}
-likely <- function(x, levs=likely_levels, ...) { multiple_choice(x, levs=levs, ...)}
-understanding <- function(x) { ordered(x, levels=c("None", "Little", "Some", "Good", "Full"))}
-education <- function(x, levs=education_levels, ...) { multiple_choice(x, levs=levs, ...)}
-gender <- function(x, levs=gender_levels, ordered=F, ...) { multiple_choice(x, levs=levs, ordered=ordered, ...)}
-race <- function(x, levs=race_levels, ordered=F, ...) { multiple_choice(x, levs=levs, ordered=ordered, ...)}
-attention <- function(x, correct) { x == correct }
 

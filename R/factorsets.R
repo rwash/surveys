@@ -69,6 +69,7 @@ print.factorset <- function(fs, cut=NULL) {
 #'
 #' @param fs A \code{factorset} object
 #' @param ymax The maximum y value to draw.  This ensures that all items are visually comparable.
+#' @export
 plot.factorset <- function(fs, ymax=1150) {
   scales <- attr(fs, "item.scales")
   plots <- lapply(scales, function(s) { plot_list(s, ymax=ymax)})

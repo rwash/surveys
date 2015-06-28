@@ -12,6 +12,7 @@
 #' @param x A vector of data values to be standardized
 #' @return Standardized data values
 #'
+#' @export
 #' @examples
 #' ex <- standardize(rnorm(100, 10, 5))
 #' mean(ex)
@@ -33,6 +34,7 @@ standardize <- function(x) {
 #'
 #' @param v1 A matrix or data frame where each column is an item, and each row is a data point.
 #' @return A list containing three items: sample.size, number.of.items, and alpha
+#' @export
 alt_alpha <- function(v1) {
   v1 <- na.omit(v1)
   nv1 <- ncol(v1)
@@ -65,6 +67,7 @@ alt_alpha <- function(v1) {
 #' @return An object of type \code{item.scale}.  This is fundamentally a vector, and can
 #'   be used as such.  It has a number of additional attributes (such as \code{cronbach})
 #'   that are useful in future calculations and functions
+#' @export
 item.scale <- function(formula, data=NULL, subset=NULL, na.action = na.pass,
                        drop.unused.levels=F, scale.fun=mean, standard=FALSE,
                        numeric=FALSE, ...) {
@@ -120,6 +123,7 @@ item.scale <- function(formula, data=NULL, subset=NULL, na.action = na.pass,
 #' @param scope A character vector containing the list of items that will be dropped.
 #' @return An \code{n} by 3 matrix where \code{n} is the number of items to be dropped.
 #'   Includes the mean, standard deviation, and alpha of each new scale as items are dropped.
+#' @export
 drop1.item.scale <- function(x, scope) {
   if (missing(scope)) {
     if ("terms" %in% names(attributes(attr(x, "model.frame")))) {
@@ -162,6 +166,7 @@ drop1.item.scale <- function(x, scope) {
 #'   must be present either in the original data from of {x} or in the environment.
 #' @return An \code{n} by 3 matrix where \code{n} is the number of items to be added.
 #'   Includes the mean, standard deviation, and alpha of each new scale as items are added.
+#' @export
 add1.item.scale <- function(x, scope) {
   if (missing(scope)) {
     stop("Must specify scope variables to be added")
@@ -193,6 +198,7 @@ add1.item.scale <- function(x, scope) {
 #'
 #' @param x An \code{item.scale} object
 #' @param digits The number of digits to print when printing numbers.  Passed to \code{format()}
+#' @export
 print.item.scale <- function(x, digits=3) {
   if (attr(x, "standardized"))
     cat("Standardized ")
@@ -214,6 +220,7 @@ print.item.scale <- function(x, digits=3) {
 #' @param maxsum Not sure what this is
 #' @param digits Unused
 #' @return An object of class \code{summary.item.scale}
+#' @export
 summary.item.scale <- function(x, maxsum=NULL, digits=NULL) {
   out <- c("Mean"=mean(x, na.rm=T), "SD" = sd(x, na.rm=T), "Cronbach"=attr(x, "cronbach"))
   if ((!is.null(maxsum)) && (length(out) > maxsum)) {
@@ -234,6 +241,7 @@ summary.item.scale <- function(x, maxsum=NULL, digits=NULL) {
 #'
 #' @param x An \code{item.scale} object
 #' @param digits The number of digits to print when printing numbers.  Passed to \code{format()}
+#' @export
 print.summary.item.scale <- function(x, digits=3) {
   print.item.scale(attr(x, "data"), digits=digits)
 
@@ -245,10 +253,11 @@ print.summary.item.scale <- function(x, digits=3) {
 }
 
 if (!exists("factanal.default")) {
-  factanal.default <- factanal
+  factanal.default <- stats::factanal
 }
 
 #' Conduct a factor analysis
+#' @export
 factanal <- function(x, factors, ...) {
   UseMethod("factanal")
 }
@@ -261,6 +270,7 @@ factanal <- function(x, factors, ...) {
 #' @param x An \code{item.scale} that contains the list of items to factor analyze
 #' @param factors the number of factors to extract
 #' @return An object of class \code{factanal}
+#' @export
 factanal.item.scale <- function(x, factors, ...) {
   factanal.default(na.omit(attr(x, "model.frame")), factors, ...)
 }

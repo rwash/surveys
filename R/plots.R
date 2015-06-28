@@ -10,6 +10,7 @@
 #'   question options from the survey
 #' @param ymax The maximum y value (ylim) for the plot.  This is used to ensure that a set of plots are comparable.
 #' @return A ggplot2 plot object containing a histogram
+#' @export
 plot_question <- function(d, question, labels=NULL, ymax=1200) {
   d <- subset(d, !is.na(d[[question]]))
   out <- ggplot(d, aes_string(x=question)) + geom_histogram(binwidth=1) +
@@ -27,6 +28,7 @@ plot_question <- function(d, question, labels=NULL, ymax=1200) {
 #' @param s An \code{item.scale} object
 #' @param ... Any additional parameters for \code{plot_question}
 #' @return A \code{list} of ggplot2 objects
+#' @export
 plot_list <- function(s, ...) {
   mf <- attr(s, "model.frame.orig")
   plots <- lapply(colnames(mf), function(n) { plot_question(mf, n, ...)})
