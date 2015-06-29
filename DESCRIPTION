@@ -16,4 +16,6 @@ Imports: psy,
     grid,
     lubridate,
     stringr
-Suggests: testthat
+Suggests: testthat,
+    knitr
+VignetteBuilder: knitr
