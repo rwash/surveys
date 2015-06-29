@@ -11,6 +11,10 @@ char_is_date <- function(x) { return(all(!is.na(suppressWarnings(lubridate::ymd_
 # Convert 0/1 to T/F.  Useful when converting a logical question
 convert_logical <- function(x) { return(sub("0", "F", sub("1", "T", x))) }
 
+# A checkbox has a text value (for checked), or NA (for unchecked)
+char_is_checkbox <- function(x) { return(length(unique(x)) == 2 && length(na.omit(unique(x))) == 1) }
+checkbox <- function(x) { return(!is.na(x)) }
+
 #checkbox <- function(x) { sapply(x, isTRUE) } # How is checkbox different from logical?
 
 # --- Attention Check Questions ---
@@ -76,5 +80,5 @@ load_question_types <- function() {
   add_question_type("qualtrics.subject_id", is_qualtrics_subject_id, as.character)
   add_question_type("no_variation", all_identical, "remove")
   add_question_type("date", char_is_date, lubridate::ymd_hms)
-#  add_question_type("checkbox")
+  add_question_type("checkbox", char_is_checkbox, checkbox)
 }

@@ -155,6 +155,34 @@ test_that("ignored questions are ignored by detect.survey", {
   expect_equal(out$test_ignore3[1], "1.0")
   expect_equal(out$test_ignore3[2], "2.2")
   expect_equal(out$test_ignore3[3], "3.3")
-
   rm(list="test_ignore", envir=surveys::ignore_questions)
+})
+
+test_that("checkboxes can be detected", {
+  expect_true(char_is_checkbox(c("Hi", "Hi", NA, NA)))
+  expect_false(char_is_checkbox(c("Hi", "Hi")))
+  expect_false(char_is_checkbox(c(NA,NA)))
+})
+
+test_that("converting checkboxes is correct", {
+  out <- checkbox(c("Hi", "Hi", NA, NA))
+  expect_equal(length(out), 4)
+  expect_is(out, "logical")
+  expect_equal(out, c(T,T,F,F))
+})
+
+test_that("checkboxes are detected by detect.question", {
+  out <- detect.question(c("test", "test", NA, NA, "test"), col_name="test_cbox")
+  expect_is(out, "logical")
+  expect_equal(length(out), 5)
+  expect_equal(out, c(T,T,F,F,T))
+})
+
+test_that("checkboxes are detected by detect.survey", {
+  df <- data.frame(one=c("1.0", "2.0", "2.0", "2.5", "2.5"), two=c("test", "test", NA, NA, "test"), stringsAsFactors = F)
+  out <- detect.survey(df)
+  expect_is(out, "data.frame")
+  expect_is(out$two, "logical")
+  expect_equal(length(out$two), 5)
+  expect_equal(out$two, c(T,T,F,F,T))
 })
