@@ -64,12 +64,20 @@ test_that("single value columns are detected", {
   expect_true(all_identical(c("a", "a", "a")))
   expect_true(all_identical(c("", "", "")))
   expect_true(all_identical(c("xyz", "xyz", "xyz")))
-  expect_false(all_identical(c("1", "1", "2")))
   expect_true(all_identical(c(NA, NA, NA)))
+  expect_false(all_identical(c("1", "1", "2")))
+})
+
+test_that("single value columns are marked for removal", {
+  expect_null(detect.question(c("1", "1", "1", "1"), "test_id1"))
+  expect_null(detect.question(c(NA, NA, NA), "test_id2"))
+  expect_null(detect.question(c("", "", "", "", ""), "test_id3"))
 })
 
 test_that("single value columns are removed", {
-  # TODO: fill this test in
+  df <- data.frame(one=c("1", "2", "3"), two=c("1", "1", "1"), three=c("", "", ""))
+  out <- detect.survey(df)
+  expect_equal(length(out), 1)
 })
 
 test_that("date detector works", {

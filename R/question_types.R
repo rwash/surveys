@@ -72,13 +72,14 @@ is_ignore_question <- function(column) {
 }
 
 load_question_types <- function() {
-  add_question_type("ignored", is_ignore_question, as.character)
+  # Question types are checked alphabetically; _ puts them up front
+  add_question_type("_ignored", is_ignore_question, as.character)
   add_question_type("attention.check", is_attention_check, attention_check)
+  add_question_type("_no_variation", all_identical, "remove")
   add_question_type("numeric", char_is_numeric, as.numeric)
   add_question_type("logical", char_is_logical, function(x) { as.logical(convert_logical(x)) } )
   add_question_type("ip.address", char_is_ip, as.character)
   add_question_type("qualtrics.subject_id", is_qualtrics_subject_id, as.character)
-  add_question_type("no_variation", all_identical, "remove")
   add_question_type("date", char_is_date, lubridate::ymd_hms)
   add_question_type("checkbox", char_is_checkbox, checkbox)
 }
