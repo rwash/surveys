@@ -37,6 +37,12 @@ remove_question_type <- function(name) {
 }
 
 replace_nas <- function(v) {
+  if (is.factor(v)) {
+    l <- levels(v)
+    l <- ifelse(l=="", NA, l)
+    levels(v) <- l
+    return(v)
+  }
   return(ifelse(v=="", NA, v))
 }
 
@@ -51,9 +57,7 @@ replace_nas <- function(v) {
 #' @return A vector of processed data
 #' @export
 detect.question <- function(column, col_name="") {
-  if (is.character(column)) {
-    column <- replace_nas(column)
-  }
+  column <- replace_nas(column)
   attr(column, "name") <- col_name
   types <- ls(envir=question_types)
   for (type in types) {

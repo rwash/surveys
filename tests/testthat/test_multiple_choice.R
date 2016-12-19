@@ -173,3 +173,18 @@ test_that("detect question properly with NAs in factor input", {
   expect_equal(levels(out), c("Strongly Disagree", "Disagree", "Neither Agree nor Disagree", "Agree", "Strongly Agree"))
 })
 
+test_that("detect question properly with blanks in factor input", {
+  column <- factor(c("Agree", "Disagree", "neither Agree nor Disagree", "", "Strongly Agree", "Agree"))
+  out <- detect.question(column)
+  expect_is(out, "ordered")
+  expect_equal(as.numeric(out), c(4, 2, 3, NA, 5, 4))
+  expect_equal(levels(out), c("Strongly Disagree", "Disagree", "Neither Agree nor Disagree", "Agree", "Strongly Agree"))
+})
+
+test_that("detect question properly with blanks and NAs in factor input", {
+  column <- factor(c("Agree", "Disagree", "neither Agree nor Disagree", "", "Strongly Agree", NA, "Agree"))
+  out <- detect.question(column)
+  expect_is(out, "ordered")
+  expect_equal(as.numeric(out), c(4, 2, 3, NA, 5, NA, 4))
+  expect_equal(levels(out), c("Strongly Disagree", "Disagree", "Neither Agree nor Disagree", "Agree", "Strongly Agree"))
+})
