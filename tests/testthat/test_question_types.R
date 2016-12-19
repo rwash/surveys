@@ -163,7 +163,7 @@ test_that("ignored questions are ignored by detect.survey", {
   expect_equal(out$test_ignore3[1], "1.0")
   expect_equal(out$test_ignore3[2], "2.2")
   expect_equal(out$test_ignore3[3], "3.3")
-  rm(list="test_ignore", envir=surveys::ignore_questions)
+  rm(list="test_ignore3", envir=surveys::ignore_questions)
 })
 
 test_that("checkboxes can be detected", {
