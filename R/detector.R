@@ -51,7 +51,9 @@ replace_nas <- function(v) {
 #' @return A vector of processed data
 #' @export
 detect.question <- function(column, col_name="") {
-  column <- replace_nas(column)
+  if (is.character(column)) {
+    column <- replace_nas(column)
+  }
   attr(column, "name") <- col_name
   types <- ls(envir=question_types)
   for (type in types) {
