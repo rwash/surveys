@@ -71,10 +71,49 @@ is_ignore_question <- function(column) {
   return(attr(column, "name") %in% ignore_qs)
 }
 
+# --- Known Questions ---
+known_questions <- new.env(parent=emptyenv())
+
+#' Known questions
+#'
+#' Tells the question auto-detection system that a specific question is known with a predefined set of responses
+#'
+#'
+#' @param q_name The column name of the attention check question
+#' @param levels What the different options should be called
+#' @param options What the options look like in the original data.  NULL == autodetect
+#' @param ordered Should the resulting factor be ordered?
+#'
+#' @export
+known_question <- function(q_name, levels, options=NULL, ordered=F) {
+  if (exists(q_name, envir=known_questions)) {
+    warning(paste0(q_name, " is already a known question.  Overwriting..."))
+  }
+  assign(q_name, list(levels=levels, options=options, ordered=ordered), envir=known_questions)
+}
+
+is_known_question <- function(column) {
+  known_qs <- ls(envir=known_questions)
+  return(attr(column, "name") %in% known_qs)
+}
+
+process_known_question <- function(column) {
+  q_info <- get(attr(column, "name"), envir=known_questions)
+  # I have to use an if statement here because factor uses missing() to detect the present of the levels argument
+  if (!is.null(q_info$options)) {
+    out <- factor(column, levels=q_info$options, labels=q_info$levels, ordered=q_info$ordered)
+  } else {
+    out <- factor(column, labels=q_info$levels, ordered=q_info$ordered)
+  }
+  return(out)
+}
+
+
 load_question_types <- function() {
   # Question types are checked alphabetically; _ puts them up front
   add_question_type("_ignored", is_ignore_question, as.character)
   add_question_type("attention.check", is_attention_check, attention_check)
+  add_question_type("known.question", is_known_question, process_known_question)
   add_question_type("_no_variation", all_identical, "remove")
   add_question_type("numeric", char_is_numeric, as.numeric)
   add_question_type("logical", char_is_logical, function(x) { as.logical(convert_logical(x)) } )

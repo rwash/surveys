@@ -194,3 +194,48 @@ test_that("checkboxes are detected by detect.survey", {
   expect_equal(length(out$two), 5)
   expect_equal(out$two, c(T,T,F,F,T))
 })
+
+test_that("adding an known question works", {
+  known_question("test_kq1", c("Yes", "No"))
+  expect_true(exists("test_kq1", envir=surveys::known_questions))
+  temp <- get("test_kq1", envir=surveys::known_questions)
+  expect_equal(temp[['options']], NULL)
+  expect_equal(temp[['levels']], c("Yes", "No"))
+  expect_false(temp[['ordered']])
+  rm(list="test_kq1", envir=surveys::known_questions)
+})
+
+test_that("known question detection works in detect.question", {
+  known_question("test_kq2", c("test_valid", "test_invalid"))
+  out <- detect.question(c("test_valid", "test_invalid", "test_valid"), col_name="test_kq2")
+  expect_is(out, "factor")
+  expect_equal(length(out), 3)
+  expect_equal(levels(out), c("test_valid", "test_invalid"))
+  expect_false(is.ordered(out))
+  rm(list="test_kq2", envir=surveys::known_questions)
+})
+
+test_that("known question detection works in detect.survey", {
+  known_question("test_kq3", c("test_valid", "test_invalid"))
+  df <- data.frame(one=c("1.0", "2.0", "2.0"), test_kq3=c("test_invalid", "test_valid", "test_valid"), stringsAsFactors = F)
+  out <- detect.survey(df)
+  expect_is(out, "data.frame")
+  expect_is(out$test_kq3, "factor")
+  expect_equal(length(out$test_kq3), 3)
+  expect_equal(levels(out$test_kq3), c("test_valid", "test_invalid"))
+  expect_false(is.ordered(out$test_kq3))
+  rm(list="test_kq3", envir=surveys::known_questions)
+})
+
+test_that("known question detection works with specified ordered levels", {
+  known_question("test_kq5", c("test_valid", "test_invalid"), options=c(5,7), ordered=T)
+  out <- detect.question(c(5,7,5), col_name="test_kq5")
+  expect_is(out, "factor")
+  expect_equal(length(out), 3)
+  expect_equal(levels(out), c("test_valid", "test_invalid"))
+  expect_true(is.ordered(out))
+  rm(list="test_kq5", envir=surveys::known_questions)
+})
+
+
+
