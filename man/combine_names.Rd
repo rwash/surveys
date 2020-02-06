@@ -2,7 +2,6 @@
 % Please edit documentation in R/combine_names.R, R/surveys.R
 \name{combine_names}
 \alias{combine_names}
-\alias{combine_names}
 \title{Create all combinations of sets of strings}
 \usage{
 combine_names(..., sep = ".")
