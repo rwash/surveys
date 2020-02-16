@@ -6,9 +6,9 @@ test_that("questions get added to the environment", {
   # Run something from the package
   checkbox <- function(x) { sapply(x, isTRUE) }
   add_question_type("test_checkbox", is.logical, checkbox)
-  expect_true(exists("test_checkbox", envir=surveys::question_types))
-  expect_is(get("test_checkbox", envir=surveys::question_types), "list")
-  val = get("test_checkbox", envir=surveys::question_types)
+  expect_true(exists("test_checkbox", envir=question_types))
+  expect_is(get("test_checkbox", envir=question_types), "list")
+  val = get("test_checkbox", envir=question_types)
   expect_is(val[[1]], "function")
   expect_is(val[[2]], "function")
   rm(list="test_checkbox", envir=surveys::question_types)

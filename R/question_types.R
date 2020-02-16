@@ -109,44 +109,43 @@ process_known_question <- function(column) {
 }
 
 
-# --- Multiple Answer Questions ---
-mulanswer_questions <- new.env(parent=emptyenv())
-
-#' Multiple Answer questions
+#' # --- Multiple Answer Questions ---
+#' mulanswer_questions <- new.env(parent=emptyenv())
 #'
-#' Questions where there are checkboxes, and participants can answer multiple answers
+#' #' Multiple Answer questions
+#' #'
+#' #' Questions where there are checkboxes, and participants can answer multiple answers
+#' #'
+#' #'
+#' #' @param q_name The column name of the attention check question
+#' #' @param levels What the different options should be called
+#' #' @param options What the options look like in the original data.  NULL == autodetect
+#' #'
+#' #' @export
+#' multiple_answer_question <- function(q_name, levels, options=NULL) {
+#'   if (exists(q_name, envir=mulanswer_questions)) {
+#'     warning(paste0(q_name, " is already a multiple answer question.  Overwriting..."))
+#'   }
+#'   assign(q_name, list(levels=levels, options=options), envir=mulanswer_questions)
+#' }
 #'
+#' is_multiple_answer_question <- function(column) {
+#'   known_qs <- ls(envir=mulanswer_questions)
+#'   return(attr(column, "name") %in% known_qs)
+#' }
 #'
-#' @param q_name The column name of the attention check question
-#' @param levels What the different options should be called
-#' @param options What the options look like in the original data.  NULL == autodetect
+#' process_multiple_answer_question <- function(column) {
+#'   q_info <- get(attr(column, "name"), envir=mulanswer_questions)
+#'   out <- stringr::str_split(column, ",")
+#'   # I have to use an if statement here because factor uses missing() to detect the present of the levels argument
+#'   # if (!is.null(q_info$options)) {
+#'   #   out <- factor(column, levels=q_info$options, labels=q_info$levels)
+#'   # } else {
+#'   #   out <- factor(column, labels=q_info$levels)
+#'   # }
+#'   return(out)
+#' }
 #'
-#' @export
-multiple_answer_question <- function(q_name, levels, options=NULL) {
-  if (exists(q_name, envir=mulanswer_questions)) {
-    warning(paste0(q_name, " is already a multiple answer question.  Overwriting..."))
-  }
-  assign(q_name, list(levels=levels, options=options), envir=mulanswer_questions)
-}
-
-is_multiple_answer_question <- function(column) {
-  known_qs <- ls(envir=mulanswer_questions)
-  return(attr(column, "name") %in% known_qs)
-}
-
-process_multiple_answer_question <- function(column) {
-  q_info <- get(attr(column, "name"), envir=mulanswer_questions)
-  out <- stringr::str_split(column, ",")
-  # I have to use an if statement here because factor uses missing() to detect the present of the levels argument
-  # if (!is.null(q_info$options)) {
-  #   out <- factor(column, levels=q_info$options, labels=q_info$levels)
-  # } else {
-  #   out <- factor(column, labels=q_info$levels)
-  # }
-  return(out)
-}
-
-
 
 
 load_question_types <- function() {
@@ -154,7 +153,7 @@ load_question_types <- function() {
   add_question_type("_ignored", is_ignore_question, as.character)
   add_question_type("attention.check", is_attention_check, attention_check)
   add_question_type("known.question", is_known_question, process_known_question)
-  add_question_type("multiple.answer", is_multiple_answer_question, process_multiple_answer_question)
+  add_question_type("multiple.answer", multiple_answer_detector, multiple_answer_processor)
   add_question_type("_no_variation", all_identical, "remove")
   add_question_type("numeric", char_is_numeric, as.numeric)
   add_question_type("logical", char_is_logical, function(x) { as.logical(convert_logical(x)) } )

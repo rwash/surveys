@@ -7,10 +7,10 @@
 detect.survey(frame)
 }
 \arguments{
-\item{frame}{The data.frame containing the survey}
+\item{frame}{The data.frame or tibble containing the survey}
 }
 \value{
-A new data.frame containing the processed survey
+A new tibble containing the processed survey
 }
 \description{
 Automatically clean a survey by iterating through a data frame and automatically detecting

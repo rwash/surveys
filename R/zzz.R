@@ -1,4 +1,5 @@
 
+#' @importFrom rlang .data
 
 .onLoad <- function(libname, pkgname) {
   load_question_types()

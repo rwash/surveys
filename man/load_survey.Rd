@@ -10,7 +10,7 @@ load_survey(file, ...)
 \item{file}{Name of the file to load}
 }
 \value{
-A data.frame containing the processed dataset
+A tibble containing the processed dataset
 }
 \description{
 Loads a survey dataset from a file, auto-detects all of the columns, and then processes the

@@ -85,20 +85,31 @@ detect.question <- function(column, col_name="") {
 #' Automatically clean a survey by iterating through a data frame and automatically detecting
 #' each question's type and processing it
 #'
-#' @param frame The data.frame containing the survey
+#' @param frame The data.frame or tibble containing the survey
 #'
-#' @return A new data.frame containing the processed survey
+#' @return A new tibble containing the processed survey
 #' @export
 detect.survey <- function(frame) {
+  n_rows <- dim(frame)[1]
   out <- lapply(names(frame), function(n) { detect.question(frame[[n]], n)} )
   names(out) <- names(frame)
   for (i in names(out)) {
     if (is.null(out[[i]])) {
-      out[[i]] <- NULL  # Actually remove the column
+      out[[i]] <- NULL  # Actually remove the column if it is all NULL
     }
   }
-  out <- tibble::as_tibble(out, stringsAsFactors=F)
-  return(out)
+  out_tibble <- tibble::tibble(.rows = n_rows)
+  for (i in names(out)) {
+    if (tibble::is_tibble(out[[i]])) {
+      names(out[[i]]) <- stringr::str_c(i, "_", names(out[[i]]))
+      out_tibble <- dplyr::bind_cols(out_tibble, out[[i]])
+    } else {
+      out_tibble <- tibble::add_column(out_tibble, !!i := out[[i]])
+    }
+  }
+  # name_fix <- function(x) {stringr::str_remove(x, "\\$value")}
+  # out <- tibble::as_tibble(out, .name_repair = ~name_fix)
+  return(out_tibble)
 }
 
 #' Load a survey dataset from a file
@@ -108,7 +119,7 @@ detect.survey <- function(frame) {
 #'
 #' @param file Name of the file to load
 #'
-#' @return A data.frame containing the processed dataset
+#' @return A tibble containing the processed dataset
 #' @export
 load_survey <- function(file, ...) {
   f <- readr::read_csv(file, ...)

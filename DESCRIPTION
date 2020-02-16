@@ -17,7 +17,9 @@ Imports: psy,
     lubridate,
     stringr,
     readr,
-    tibble
+    tibble,
+    rlang,
+    purrr
 Suggests: testthat,
     knitr
 VignetteBuilder: knitr
