@@ -7,7 +7,7 @@ multiple_answer_choices = new.env(parent=emptyenv())
 #' @param choice_set Character vector of options
 #' @param case_sensitive Are the options case sensitive?
 #' @export
-add_multiple_answer <- function(choice_set, ordered=T, case_sensitive=F) {
+add_multiple_answer <- function(choice_set, case_sensitive=F) {
   if (exists(choice_set, envir=multiple_answer_choices)) {
     warning("Multiple Choice set already exists")
   }

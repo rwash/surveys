@@ -96,9 +96,9 @@ test_that("date detection works", {
 
 test_that("adding an attention check question works", {
   add_attention_check("test_ac1", "test_valid")
-  expect_true(exists("test_ac1", envir=surveys::attention_checks))
-  expect_equal(get("test_ac1", envir=surveys::attention_checks), "test_valid")
-  rm(list="test_ac1", envir=surveys::attention_checks)
+  expect_true(exists("test_ac1", envir=attention_checks))
+  expect_equal(get("test_ac1", envir=attention_checks), "test_valid")
+  rm(list="test_ac1", envir=attention_checks)
 })
 
 test_that("attention checks fail NAs", {
@@ -112,7 +112,7 @@ test_that("attention checks fail NAs", {
   expect_false(out[2])
   expect_false(out[3])
   expect_true(out[4])
-  rm(list="test_ac4", envir=surveys::attention_checks)
+  rm(list="test_ac4", envir=attention_checks)
 })
 
 test_that("attention check detection works in detect.question", {
@@ -122,7 +122,7 @@ test_that("attention check detection works in detect.question", {
   expect_equal(length(out), 2)
   expect_true(out[1])
   expect_false(out[2])
-  rm(list="test_ac2", envir=surveys::attention_checks)
+  rm(list="test_ac2", envir=attention_checks)
 })
 
 test_that("attention check detection works in detect.survey", {
@@ -135,13 +135,13 @@ test_that("attention check detection works in detect.survey", {
   expect_false(out$test_ac3[1])
   expect_true(out$test_ac3[2])
   expect_true(out$test_ac3[3])
-  rm(list="test_ac3", envir=surveys::attention_checks)
+  rm(list="test_ac3", envir=attention_checks)
 })
 
 test_that("adding an ignore question", {
   ignore_question("test_ignore")
-  expect_true(exists("test_ignore", envir=surveys::ignore_questions))
-  rm(list="test_ignore", envir=surveys::ignore_questions)
+  expect_true(exists("test_ignore", envir=ignore_questions))
+  rm(list="test_ignore", envir=ignore_questions)
 })
 
 test_that("ignored questions are ignored by detect.question", {
@@ -150,7 +150,7 @@ test_that("ignored questions are ignored by detect.question", {
   expect_is(out, "character")
   expect_equal(out[1], "1.0")
   expect_equal(out[2], "2.0")
-  rm(list="test_ignore2", envir=surveys::ignore_questions)
+  rm(list="test_ignore2", envir=ignore_questions)
 })
 
 test_that("ignored questions are ignored by detect.survey", {
@@ -163,7 +163,7 @@ test_that("ignored questions are ignored by detect.survey", {
   expect_equal(out$test_ignore3[1], "1.0")
   expect_equal(out$test_ignore3[2], "2.2")
   expect_equal(out$test_ignore3[3], "3.3")
-  rm(list="test_ignore3", envir=surveys::ignore_questions)
+  rm(list="test_ignore3", envir=ignore_questions)
 })
 
 test_that("checkboxes can be detected", {
@@ -197,12 +197,12 @@ test_that("checkboxes are detected by detect.survey", {
 
 test_that("adding an known question works", {
   known_question("test_kq1", c("Yes", "No"))
-  expect_true(exists("test_kq1", envir=surveys::known_questions))
-  temp <- get("test_kq1", envir=surveys::known_questions)
+  expect_true(exists("test_kq1", envir=known_questions))
+  temp <- get("test_kq1", envir=known_questions)
   expect_equal(temp[['options']], NULL)
   expect_equal(temp[['levels']], c("Yes", "No"))
   expect_false(temp[['ordered']])
-  rm(list="test_kq1", envir=surveys::known_questions)
+  rm(list="test_kq1", envir=known_questions)
 })
 
 test_that("known question detection works in detect.question", {
@@ -212,7 +212,7 @@ test_that("known question detection works in detect.question", {
   expect_equal(length(out), 3)
   expect_equal(levels(out), c("test_valid", "test_invalid"))
   expect_false(is.ordered(out))
-  rm(list="test_kq2", envir=surveys::known_questions)
+  rm(list="test_kq2", envir=known_questions)
 })
 
 test_that("known question detection works in detect.survey", {
@@ -224,7 +224,7 @@ test_that("known question detection works in detect.survey", {
   expect_equal(length(out$test_kq3), 3)
   expect_equal(levels(out$test_kq3), c("test_valid", "test_invalid"))
   expect_false(is.ordered(out$test_kq3))
-  rm(list="test_kq3", envir=surveys::known_questions)
+  rm(list="test_kq3", envir=known_questions)
 })
 
 test_that("known question detection works with specified ordered levels", {
@@ -234,16 +234,16 @@ test_that("known question detection works with specified ordered levels", {
   expect_equal(length(out), 3)
   expect_equal(levels(out), c("test_valid", "test_invalid"))
   expect_true(is.ordered(out))
-  rm(list="test_kq5", envir=surveys::known_questions)
+  rm(list="test_kq5", envir=known_questions)
 })
 
 # test_that("adding a multiple answer question works", {
 #   multiple_answer_question(c("ma_1", "ma_2"))
-#   expect_true(exists("test_ma1", envir=surveys::mulanswer_questions))
-#   temp <- get("test_ma1", envir=surveys::mulanswer_questions)
+#   expect_true(exists("test_ma1", envir=mulanswer_questions))
+#   temp <- get("test_ma1", envir=mulanswer_questions)
 #   expect_equal(temp[['options']], NULL)
 #   expect_equal(temp[['levels']], c("Yes", "No"))
-#   rm(list="test_ma1", envir=surveys::mulanswer_questions)
+#   rm(list="test_ma1", envir=mulanswer_questions)
 # })
 #
 # test_that("multiple answer question detection works in detect.question", {
@@ -257,7 +257,7 @@ test_that("known question detection works with specified ordered levels", {
 #   expect_equal(out[[2]], "No")
 #   expect_equal(length(out[[3]]), 2)
 #   expect_equal(out[[3]], c("Yes", "No"))
-#   rm(list="test_ma2", envir=surveys::mulanswer_questions)
+#   rm(list="test_ma2", envir=mulanswer_questions)
 # })
 #
 # test_that("mulitple answer question detection works in detect.survey", {
@@ -269,7 +269,7 @@ test_that("known question detection works with specified ordered levels", {
 #   expect_equal(length(out$test_ma3), 3)
 # #  expect_equal(levels(out$test_kq3), c("test_valid", "test_invalid"))
 # #  expect_false(is.ordered(out$test_kq3))
-#   rm(list="test_ma3", envir=surveys::mulanswer_questions)
+#   rm(list="test_ma3", envir=mulanswer_questions)
 # })
 #
 #
