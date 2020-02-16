@@ -97,7 +97,7 @@ detect.survey <- function(frame) {
       out[[i]] <- NULL  # Actually remove the column
     }
   }
-  out <- as.data.frame(out, stringsAsFactors=F)
+  out <- tibble::as_tibble(out, stringsAsFactors=F)
   return(out)
 }
 
