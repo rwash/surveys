@@ -85,6 +85,15 @@ test_that("MA case sensitive detector works", {
   expect_false(multiple_answer_detector(column2))
 })
 
+test_that("multiple answer comma detector works", {
+  choices <- c("test_45", "test,46")
+  column <- c("test_45", "test_45", "test,46", NA)
+  column2 <- c("test_45", "test_45", "test_46", NA)
+  add_multiple_answer(choices, case_sensitive=T)
+  expect_true(multiple_answer_detector(column))
+  expect_false(multiple_answer_detector(column2))
+})
+
 test_that("MA case insensitive processor works", {
   choices <- c("test_50", "Test_51")
   column <- c("TEST_50", "Test_50", "test_51", NA)
@@ -97,6 +106,17 @@ test_that("MA case insensitive processor works", {
   expect_equal(out$test_51, c(F,F,T,F))
 })
 
+test_that("multiple answer comma processor works", {
+  choices <- c("test_55", "test,56")
+  column <- c("test_55", "test,56", "test_55,test,56", NA)
+  add_multiple_answer(choices)
+  out <- multiple_answer_processor(column)
+  expect_is(out, "tbl_df")
+  expect_equal(dim(out), c(4,3))
+  expect_equal(out$value, c("test_55", "test,56", "test_55,test,56", NA))
+  expect_equal(out$test_55, c(T,F,T,F))
+  expect_equal(out$test_56, c(F,T,T,F))
+})
 test_that("MA case sensitive processor works", {
   choices <- c("test_60", "Test_61")
   column <- c("test_60", "test_60", "Test_61", NA)
@@ -107,7 +127,6 @@ test_that("MA case sensitive processor works", {
   expect_equal(out$test_60, c(T,T,F,F))
   expect_equal(out$Test_61, c(F,F,T,F))
 })
-
 
 test_that("mulitple answers processor allows multiple answers", {
   choices <- c("test_70", "test_71")
@@ -142,3 +161,4 @@ test_that("mulitple answers get detected properly in detect.survey", {
   expect_equal(out$col_test_90, c(T,T,F,F,T))
   expect_equal(out$col_test_91, c(F,F,T,F,T))
 })
+
