@@ -8,10 +8,10 @@ multiple_choices = new.env(parent=emptyenv())
 #' @param case_sensitive Are the options case sensitive?
 #' @export
 add_multiple_choice <- function(choice_set, ordered=T, case_sensitive=F) {
-  if (exists(choice_set, envir=multiple_choices)) {
+  name <- paste0(choice_set, collapse="__")
+  if (exists(name, envir=multiple_choices)) {
     warning("Multiple Choice set already exists")
   }
-  name <- paste0(choice_set, collapse="__")
   assign(name, list(options=choice_set, ordered=ordered, case_sensitive=case_sensitive), envir=multiple_choices)
 }
 
