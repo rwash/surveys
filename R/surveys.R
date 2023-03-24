@@ -64,7 +64,7 @@ combine_names <- function(..., sep=".") {
   } else {
     chs <- trim(chs)
   }
-  if (class(chs) == "character") {
+  if (all(class(chs) == "character")) {
     paste(chs, collapse=sep)
   } else {
     apply(chs, 1, paste, collapse=sep)

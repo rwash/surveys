@@ -12,10 +12,6 @@ combine_names(..., sep = ".")
 \item{...}{One or more character vectors}
 
 \item{sep}{String to use as a separator character}
-
-\item{...}{One or more character vectors}
-
-\item{sep}{String to use as a separator character}
 }
 \value{
 A vector of all possible combinations of the input paramters

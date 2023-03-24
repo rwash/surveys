@@ -5,3 +5,5 @@ Write tests for factorsets?
 
 Pass a list or vector of questions into ignore_question (and attention_check?)
 Rename add_* to just *?
+
+Create a "reset_survey()" function.

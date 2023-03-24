@@ -129,4 +129,16 @@ load_survey <- function(file, ...) {
 }
 
 
+reset_surveys <- function() {
+  question_types = new.env(parent=emptyenv())
+  multiple_choices = new.env(parent=emptyenv())
+  multiple_answer_choices = new.env(parent=emptyenv())
+  attention_checks <- new.env(parent=emptyenv())
+  ignore_questions <- new.env(parent=emptyenv())
+  known_questions <- new.env(parent=emptyenv())
+
+  load_question_types()
+  load_multiple_choice_options()
+}
+
 # TODO: Should I add a priority ordering?

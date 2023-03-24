@@ -5,7 +5,7 @@
 \title{Add a new set of multiple answer choice options.  Mulitple answers have checkboxes that
 allow the survey participant to choose more than one answer.}
 \usage{
-add_multiple_answer(choice_set, ordered = T, case_sensitive = F)
+add_multiple_answer(choice_set, case_sensitive = F)
 }
 \arguments{
 \item{choice_set}{Character vector of options}

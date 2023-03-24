@@ -4,9 +4,17 @@
 \alias{item.scale}
 \title{Functions to form a scale from a set of survey items}
 \usage{
-item.scale(formula, data = NULL, subset = NULL, na.action = na.pass,
-  drop.unused.levels = F, scale.fun = mean, standard = FALSE,
-  numeric = FALSE, ...)
+item.scale(
+  formula,
+  data = NULL,
+  subset = NULL,
+  na.action = na.pass,
+  drop.unused.levels = F,
+  scale.fun = mean,
+  standard = FALSE,
+  numeric = FALSE,
+  ...
+)
 }
 \arguments{
 \item{formula}{A formula specifying the items to combine into a scale
