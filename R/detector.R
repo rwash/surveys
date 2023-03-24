@@ -129,13 +129,19 @@ load_survey <- function(file, ...) {
 }
 
 
+#' Resets the surveys package
+#'
+#' Removes all known question types and answer types, and resets the surveys packag
+#' back to where it is when it is first loaded
+#'
+#' @export
 reset_surveys <- function() {
-  question_types = new.env(parent=emptyenv())
-  multiple_choices = new.env(parent=emptyenv())
-  multiple_answer_choices = new.env(parent=emptyenv())
-  attention_checks <- new.env(parent=emptyenv())
-  ignore_questions <- new.env(parent=emptyenv())
-  known_questions <- new.env(parent=emptyenv())
+  rm(list=ls(envir=question_types), envir=question_types)
+  rm(list=ls(envir=multiple_choices), envir=multiple_choices)
+  rm(list=ls(envir=multiple_answer_choices), envir=multiple_answer_choices)
+  rm(list=ls(envir=attention_checks), envir=attention_checks)
+  rm(list=ls(envir=ignore_questions), envir=ignore_questions)
+  rm(list=ls(envir=known_questions), envir=known_questions)
 
   load_question_types()
   load_multiple_choice_options()
