@@ -90,7 +90,7 @@ add_perc <- function(x, count_col = NULL, .total=NULL, name="perc", margins=NULL
   }
   out <- temp %>% mutate(!!name :=  {{count_col}} / .tally) %>% select(-`.tally`)
   if (format) {
-    out <- out %>% mutate(!!name := percent(.data[[name]]))
+    out <- out %>% mutate(!!name := scales::percent(.data[[name]]))
   }
   margin_col_names <- ns(x, c({{margins}}, -{{count_col}}))
   if (length(margin_col_names) > 0) {
