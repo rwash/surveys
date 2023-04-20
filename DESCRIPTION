@@ -19,7 +19,8 @@ Imports: psy,
     readr,
     tibble,
     rlang,
-    purrr
+    purrr,
+    scales
 Suggests: testthat,
     knitr
 VignetteBuilder: knitr
