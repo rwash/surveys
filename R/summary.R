@@ -4,7 +4,15 @@
 
 default_width=200
 
-# Function to select names from a tibble, and returns a character vector
+#' Select names from a tibble, and returns a character vector
+#'
+#' @param data The dataset (data frame or tibble)
+#' @param ... tidy-select name selection
+#'
+#' @return Character vector of column names
+#' @export
+#'
+#' @examples
 ns <- function(data, ...) {
   expr <- rlang::expr(c(...))
   pos <- tidyselect::eval_select(expr, data)
