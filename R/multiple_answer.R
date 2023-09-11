@@ -58,7 +58,7 @@ multiple_answer_processor <- function(column) {
   if (has_commas(choices)) {
     out <- tibble::enframe(column, name=NULL)
     mutate_opts <- purrr::map(choices, ~rlang::quo(purrr::map_lgl(value, ~tidyr::replace_na(stringr::str_detect(.x, !!.x), FALSE))))
-    names(mutate_opts) <- stringr::str_replace(choices, ",", "_")
+    names(mutate_opts) <- stringr::str_replace_all(choices, ",", "_")
   } else {
     out <- tibble::enframe(stringr::str_split(column, ","), name=NULL)
     mutate_opts <- purrr::map(choices, ~rlang::quo(purrr::map_lgl(value, ~!!.x %in% .x)))
